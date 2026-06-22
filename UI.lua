@@ -150,10 +150,9 @@ function Addon.UI:CreateMainFrame()
     allianceBtn:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1 })
     
     local allianceTex = allianceBtn:CreateTexture(nil, "ARTWORK")
-    allianceTex:SetSize(34, 34)
+    allianceTex:SetSize(28, 28)
     allianceTex:SetPoint("CENTER", 0, 0)
-    allianceTex:SetTexture("Interface\\TargetingFrame\\UI-PVP-Alliance")
-    allianceTex:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+    allianceTex:SetTexture("Interface\\Timer\\Alliance-Logo")
     
     local hordeBtn = CreateFrame("Button", nil, factionFrame, "BackdropTemplate")
     hordeBtn:SetSize(34, 34)
@@ -161,10 +160,9 @@ function Addon.UI:CreateMainFrame()
     hordeBtn:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1 })
     
     local hordeTex = hordeBtn:CreateTexture(nil, "ARTWORK")
-    hordeTex:SetSize(34, 34)
+    hordeTex:SetSize(28, 28)
     hordeTex:SetPoint("CENTER", 0, 0)
-    hordeTex:SetTexture("Interface\\TargetingFrame\\UI-PVP-Horde")
-    hordeTex:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+    hordeTex:SetTexture("Interface\\Timer\\Horde-Logo")
     
     local function SetFactionVisuals(faction)
         if faction == "Alliance" then
