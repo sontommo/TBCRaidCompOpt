@@ -1,9 +1,7 @@
 # WoW: The Burning Crusade Anniversary - Raid Composition Optimiser
 *Created by Béautiful - Spineshatter EU*
 
-If you've played The Burning Crusade for more than 10 minutes, you know the absolute nightmare of arranging raid groups. While the Anniversary Edition brought some massive quality-of-life changes—like making Bloodlust and Heroism raid-wide—many of the most important buffs in the game are still strictly **party-wide**. If your Enhancement Shaman is in Group 2, the Rogues in Group 3 are missing out on Windfury and getting angry.
-
-This addon solves that completely. You just paste your 25-man roster straight from Raid-Helper, and it automatically mathematically sorts everyone into 5 optimised groups so nobody misses out on the buffs they need to parse. 
+TBC Raid Comp Optimiser is a powerful, mathematically driven addon designed to automatically sort and optimize your 25-man raid compositions. By simply pasting your roster from Raid-Helper, the engine instantly organizes your raid into 5 perfect groups based on elite TBC Anniversary Edition meta rules. It ensures critical party-wide buffs (like Windfury, Totem of Wrath, and Ferocious Inspiration) are distributed flawlessly, while providing a real-time, dynamic checklist of all active raid synergies to guarantee your raid is fully optimized. 
 
 ## How to Use
 
@@ -55,3 +53,19 @@ Nobody wants to memorise all this. That's why the UI has a fully interactive, na
 - It scans the groups you just built and cross-references them against every buff in the game.
 - If your Melee group has an active Windfury Totem and Battle Shout, the icons light up fully coloured.
 - If you're missing something critical (like no Sunder Armour or no Shadow Priest for the healers), the icon will be greyed out so you instantly know what you're missing.
+
+## Advanced Engine Features
+
+The addon has been significantly upgraded from simple static class tracking to a fully dynamic, context-aware engine:
+
+### 1. Dynamic Context-Aware Buffs
+Instead of locking static buffs to a player's spec, the engine actively inspects the role of the group they are placed in and intelligently swaps their buffs to maximize value:
+- **Shamans**: A Resto Shaman manually dragged into a Melee or Tank group will dynamically unequip *Mana Spring Totem* and start providing *Windfury Totem* to their new group, instantly updating the UI checklist.
+- **Warriors**: A Fury Warrior overflowing into a Casters group will intelligently drop *Battle Shout* and start shouting *Commanding Shout* to give the casters survivability.
+- **Paladins**: A Holy Paladin moved to a Melee group will dynamically switch off *Concentration Aura* and provide the melee with *Devotion Aura* for physical damage reduction.
+
+### 2. High-Resolution Faction Toggling
+A sleek, high-resolution Alliance/Horde toggle on the UI dynamically tracks and swaps your faction spell variations. If you are Alliance, *Bloodlust* (Spell ID 2825) is instantly replaced with *Heroism* (Spell ID 32182) across the entire UI, complete with perfect tooltips and icons.
+
+### 3. Hyper-Optimised `O(1)` Engine
+The internal mathematics engine has been extensively refactored for massive 25-man parsing efficiency. Player totems and auras are calculated exactly once and cached directly onto the player object. The UI tracker utilizes a single-pass `O(N)` loop to build a hash map of raid statistics, eliminating hundreds of redundant loops and allowing the UI to instantly render and evaluate thousands of possible group variations with zero stutter. Memory generation is heavily strictly managed utilizing native `wipe()` API table recycling.
