@@ -1,5 +1,6 @@
 local AddonName, Addon = ...
 Addon.UI = {}
+Addon.Faction = "Alliance"
 
 -- Localize globals for performance optimization
 local CreateFrame = CreateFrame
@@ -130,6 +131,47 @@ function Addon.UI:CreateMainFrame()
     importBtn:SetPoint("TOPLEFT", 20, -45)
     importBtn:SetScript("OnClick", function()
         Addon.UI.ImportFrame:Show()
+    end)
+    
+    -- Faction Toggle
+    local factionFrame = CreateFrame("Frame", nil, f)
+    factionFrame:SetSize(120, 30)
+    factionFrame:SetPoint("TOPRIGHT", -20, -45)
+    
+    local allianceBtn = CreateFrame("CheckButton", nil, factionFrame, "UIRadioButtonTemplate")
+    allianceBtn:SetPoint("LEFT", 0, 0)
+    local allianceTex = allianceBtn:CreateTexture(nil, "OVERLAY")
+    allianceTex:SetSize(24, 24)
+    allianceTex:SetPoint("LEFT", allianceBtn, "RIGHT", 2, 0)
+    allianceTex:SetTexture("Interface\\TargetingFrame\\UI-PVP-Alliance")
+    allianceBtn:SetChecked(true)
+    
+    local hordeBtn = CreateFrame("CheckButton", nil, factionFrame, "UIRadioButtonTemplate")
+    hordeBtn:SetPoint("LEFT", allianceTex, "RIGHT", 10, 0)
+    local hordeTex = hordeBtn:CreateTexture(nil, "OVERLAY")
+    hordeTex:SetSize(24, 24)
+    hordeTex:SetPoint("LEFT", hordeBtn, "RIGHT", 2, 0)
+    hordeTex:SetTexture("Interface\\TargetingFrame\\UI-PVP-Horde")
+    hordeBtn:SetChecked(false)
+    
+    local function UpdateFaction(faction)
+        Addon.Faction = faction
+        if Addon.Core and Addon.Core.CurrentGroups then
+            local buffs = Addon.Optimiser:AnalyzeBuffs(Addon.Core.CurrentGroups)
+            Addon.UI:RenderGroups(Addon.Core.CurrentGroups, buffs)
+        end
+    end
+    
+    allianceBtn:SetScript("OnClick", function(self)
+        self:SetChecked(true)
+        hordeBtn:SetChecked(false)
+        UpdateFaction("Alliance")
+    end)
+    
+    hordeBtn:SetScript("OnClick", function(self)
+        self:SetChecked(true)
+        allianceBtn:SetChecked(false)
+        UpdateFaction("Horde")
     end)
     
     -- Groups Grid Container
@@ -414,6 +456,9 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
                 local iconF = gf.groupIcons[i]
                 if i <= numIcons then
                     local buffName = group.buffs[i]
+                    if buffName == "Bloodlust" then
+                        buffName = (Addon.Faction == "Alliance") and "Heroism" or "Bloodlust"
+                    end
                     local query = (Addon.BUFF_SPELL_IDS and Addon.BUFF_SPELL_IDS[buffName]) or buffName
                     local iconTexture = IconCache[query]
                     if not iconTexture then
@@ -446,7 +491,11 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
                     for i, buffName in ipairs(specInfo.buffs) do
                         local iconFrame = gf.playerIcons[pIndex][i]
                         if iconFrame then
-                            local query = (Addon.BUFF_SPELL_IDS and Addon.BUFF_SPELL_IDS[buffName]) or buffName
+                            local resolvedBuffName = buffName
+                            if resolvedBuffName == "Bloodlust" then
+                                resolvedBuffName = (Addon.Faction == "Alliance") and "Heroism" or "Bloodlust"
+                            end
+                            local query = (Addon.BUFF_SPELL_IDS and Addon.BUFF_SPELL_IDS[resolvedBuffName]) or resolvedBuffName
                             
                             local iconTexture = IconCache[query]
                             if not iconTexture then
@@ -456,7 +505,7 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
                             end
                             
                             iconFrame.texture:SetTexture(iconTexture)
-                            iconFrame.spellName = buffName
+                            iconFrame.spellName = resolvedBuffName
                             iconFrame:Show()
                         end
                     end
@@ -539,11 +588,15 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
                 iconF:SetScript("OnEnter", function(self)
                     if self.spellName then
                         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                        local query = (Addon.BUFF_SPELL_IDS and Addon.BUFF_SPELL_IDS[self.spellName]) or self.spellName
+                        local resolvedName = self.spellName
+                        if resolvedName == "Bloodlust" then
+                            resolvedName = (Addon.Faction == "Alliance") and "Heroism" or "Bloodlust"
+                        end
+                        local query = (Addon.BUFF_SPELL_IDS and Addon.BUFF_SPELL_IDS[resolvedName]) or resolvedName
                         if type(query) == "number" then
                             GameTooltip:SetSpellByID(query)
                         else
-                            GameTooltip:SetText(self.spellName, 1, 1, 1)
+                            GameTooltip:SetText(resolvedName, 1, 1, 1)
                         end
                         GameTooltip:Show()
                     end
@@ -561,10 +614,15 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
             item.fs:SetPoint("TOPLEFT", cf, "TOPLEFT", 18, yOffset)
             
             item.iconFrame:SetPoint("RIGHT", item.fs, "LEFT", -4, 0)
-            item.iconFrame.spellName = buff.spellName
             
-            if buff.spellName then
-                local query = (Addon.BUFF_SPELL_IDS and Addon.BUFF_SPELL_IDS[buff.spellName]) or buff.spellName
+            local resolvedSpellName = buff.spellName
+            if resolvedSpellName == "Bloodlust" then
+                resolvedSpellName = (Addon.Faction == "Alliance") and "Heroism" or "Bloodlust"
+            end
+            item.iconFrame.spellName = resolvedSpellName
+            
+            if resolvedSpellName then
+                local query = (Addon.BUFF_SPELL_IDS and Addon.BUFF_SPELL_IDS[resolvedSpellName]) or resolvedSpellName
                 local iconTexture = IconCache[query]
                 if not iconTexture then
                     local _, _, t = GetSpellInfo(query)

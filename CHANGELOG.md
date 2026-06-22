@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.1.1] - UI Refinements & Tank Synergies
 ### Added
+- **Faction Toggle**: Added an Alliance / Horde radio button toggle to the main UI. It dynamically tracks and swaps the *Bloodlust* (Horde, ID 2825) and *Heroism* (Alliance, ID 32182) spell names, icons, and tooltips seamlessly across the entire UI depending on your faction. Default is Alliance.
 - **Multi-Row Group Headers**: Group headers have been expanded and refactored using a flex-grid layout. They can now display up to 24 buff icons over 3 visually packed rows, guaranteeing all synergies are visible.
 - **Dynamic DPS Group Tags**: Mixed physical and caster groups (like Hunter/Shaman/Druid) are now smartly labeled as "DPS" rather than forcing a strict "Melee" or "Casters" label.
 - **Tank Blood Pact**: *Blood Pact* (Spell ID 27268) is now classified as a survival utility and stripped from all UI headers, *except* for the Tanks group, where the stamina gain is critically flagged as a primary tank synergy!

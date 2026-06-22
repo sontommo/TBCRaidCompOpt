@@ -91,6 +91,7 @@ Addon.BUFF_SPELL_IDS = {
     ["Misery"] = 33195,
     ["Shadow Weaving"] = 15332,
     ["Bloodlust"] = 2825,
+    ["Heroism"] = 32182,
     ["Totem of Wrath"] = 30706,
     ["Wrath of Air Totem"] = 3738,
     ["Mana Spring Totem"] = 5675,
@@ -524,7 +525,8 @@ function Addon.Optimiser:AnalyzeBuffs(groups)
     end
 
     addCategory("Raid Buffs")
-    addBuff("Bloodlust / Heroism", hasClass("Shaman"), "Bloodlust/Heroism")
+    local blName = (Addon.Faction == "Alliance") and "Heroism" or "Bloodlust"
+    addBuff(blName, hasClass("Shaman"), "Bloodlust")
     addBuff("Power Word: Fortitude", hasClass("Priest"), "Power Word: Fortitude")
     addBuff("Shadow Protection", hasClass("Priest"), "Shadow Protection")
     addBuff("Mark of the Wild", hasClass("Druid"), "Mark of the Wild")
