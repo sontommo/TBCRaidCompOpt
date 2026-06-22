@@ -152,6 +152,22 @@ Addon.SPELL_BUFFS = {
     ["Judgement of Wisdom"] = true,
 }
 
+Addon.IGNORED_UI_BUFFS = {
+    ["Tremor Totem"] = true,
+    ["Power Word: Fortitude"] = true,
+    ["Shadow Protection"] = true,
+    ["Devotion Aura"] = true,
+    ["Concentration Aura"] = true,
+    ["Retribution Aura"] = true,
+    ["Blessing of Sanctuary"] = true,
+    ["Blood Pact"] = true,
+    ["Healing Stream Totem"] = true,
+    ["Pain Suppression"] = true,
+    ["Tree of Life Aura"] = true,
+    ["Mark of the Wild"] = true,
+    ["Judgement of Light"] = true,
+}
+
 function Addon.Optimiser:GetPlayerRole(spec)
     if SPECS[spec] then return SPECS[spec].role end
     return "Unknown"
@@ -386,7 +402,9 @@ function Addon.Optimiser:Optimise(players)
             if sInfo then
                 for _, buffName in ipairs(sInfo.buffs) do
                     local skip = false
-                    if isCasterOrHealer and Addon.PHYSICAL_BUFFS[buffName] then
+                    if Addon.IGNORED_UI_BUFFS and Addon.IGNORED_UI_BUFFS[buffName] then
+                        skip = true
+                    elseif isCasterOrHealer and Addon.PHYSICAL_BUFFS[buffName] then
                         skip = true
                     elseif isMeleeOrTank and Addon.SPELL_BUFFS[buffName] then
                         skip = true
