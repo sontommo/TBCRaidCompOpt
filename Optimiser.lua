@@ -56,7 +56,7 @@ local SPECS = {
     ["Dreamstate"] = { class="Druid", role="Ranged", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Improved Faerie Fire", "Innervate"} },
     ["Feral"] = { class="Druid", role="Melee", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Leader of the Pack", "Mangle", "Faerie Fire", "Innervate"} },
     ["Guardian"] = { class="Druid", role="Tank", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Leader of the Pack", "Mangle", "Faerie Fire", "Innervate"} },
-    ["Restoration"] = { class="Druid", role="Healer", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Tree of Life", "Innervate"} },
+    ["Restoration"] = { class="Druid", role="Healer", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Tree of Life Aura", "Innervate"} },
 }
 
 Addon.SPECS = SPECS
@@ -121,7 +121,7 @@ Addon.BUFF_SPELL_IDS = {
     ["Leader of the Pack"] = 24932,
     ["Mangle"] = 33878,
     ["Faerie Fire"] = 26993,
-    ["Tree of Life"] = 33891,
+    ["Tree of Life Aura"] = 34123,
     ["Innervate"] = 29166,
     ["Improved Demoralizing Shout"] = 12879,
     ["Improved Thunder Clap"] = 12666,
@@ -184,7 +184,7 @@ Addon.IGNORED_UI_BUFFS = {
     ["Blessing of Sanctuary"] = true,
     ["Healing Stream Totem"] = true,
     ["Pain Suppression"] = true,
-    ["Tree of Life"] = true,
+    ["Tree of Life Aura"] = true,
     ["Mark of the Wild"] = true,
     ["Improved Mark of the Wild"] = true,
     ["Judgement of Light"] = true,
