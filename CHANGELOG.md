@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.1] - Advanced Meta & Interactive UI
+### Added
+- **Interactive Drag & Drop**: Players can now be manually dragged and dropped between groups in the UI to fine-tune synergies. Buffs are instantly recalculated and redrawn upon swapping.
+- **Dynamic Group Header Icons**: Group headers now explicitly scrape and display a row of interactive WoW buff icons showing exactly what synergies that group generates for itself.
+- **Intelligent Buff Filtering**: Irrelevant or non-throughput buffs (like *Blessing of Might* for Healers, or *Vampiric Touch* for physical Melee) are intelligently hidden from group headers to declutter the UI.
+- **Utility Class Spreading**: The engine now actively round-robins Shadow Priests and Balance Druids across Caster and Healer groups to maximize *Vampiric Touch* and *Moonkin Aura* uptime without double-stacking.
+- **Hunter Synergy Clustering**: All Hunters are now forcefully isolated into a single physical group, alongside a Feral Druid, to maximize exponential *Ferocious Inspiration* and *Leader of the Pack* scaling.
+- **Tree of Life Priority**: Restoration Druids are now aggressively pulled into the Tank group for the *Tree of Life* aura healing bonus.
+
+### Fixed
+- Fixed an issue where generic "Blessings" displayed as a missing texture; explicitly replaced with individual Paladin Blessings for accurate UI mapping.
+- Fixed a bug where Raid-Helper's trailing backend identifiers (e.g. `Holy1`, `Protection1`) would display ugly text in the UI. The UI now dynamically strips these trailing digits during render while perfectly preserving the logical backend matching.
+
+
 ## [v1.0] - Initial Release
 ### Added
 - **Initial Release** of the WoW: The Burning Crusade Anniversary - Raid Composition Optimiser.
