@@ -329,7 +329,8 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
             local player = group[pIndex]
             if player then
                 local colorCode = CLASS_COLORS[player.class] or "|cFFFFFFFF"
-                pf:SetText(colorCode .. player.name .. "|r\n|cFF999999" .. player.spec .. " " .. player.class .. "|r")
+                local displaySpec = string.gsub(player.spec, "%d+$", "")
+                pf:SetText(colorCode .. player.name .. "|r\n|cFF999999" .. displaySpec .. " " .. player.class .. "|r")
                 
                 -- Render Icons
                 local specInfo = Addon.SPECS and Addon.SPECS[player.spec]

@@ -16,7 +16,7 @@ local SPECS = {
     ["Holy1"] = { class="Paladin", role="Healer", buffs={"Blessing of Kings", "Blessing of Might", "Blessing of Wisdom", "Blessing of Salvation", "Devotion Aura", "Concentration Aura", "Judgement of Wisdom", "Judgement of Light"} },
     ["Holy"] = { class="Paladin", role="Healer", buffs={"Blessing of Kings", "Blessing of Might", "Blessing of Wisdom", "Blessing of Salvation", "Devotion Aura", "Concentration Aura", "Judgement of Wisdom", "Judgement of Light"} },
     ["Protection1"] = { class="Paladin", role="Tank", buffs={"Blessing of Kings", "Blessing of Might", "Blessing of Wisdom", "Blessing of Salvation", "Devotion Aura", "Retribution Aura", "Judgement of Wisdom", "Judgement of Light", "Blessing of Sanctuary"} },
-    ["Retribution"] = { class="Paladin", role="Melee", buffs={"Blessing of Kings", "Blessing of Might", "Blessing of Wisdom", "Blessing of Salvation", "Sanctity Aura", "Judgement of Wisdom", "Judgement of Light"} },
+    ["Protection"] = { class="Warrior", role="Tank", buffs={"Battle Shout", "Commanding Shout", "Sunder Armor"} },
     
     -- Hunters
     ["Beastmastery"] = { class="Hunter", role="Ranged", buffs={"Ferocious Inspiration"} },
