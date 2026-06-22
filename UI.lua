@@ -5,10 +5,14 @@ Addon.Faction = "Alliance"
 -- Localize globals for performance optimization
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
-local table_insert = table.insert
+local type = type
+local pairs = pairs
 local ipairs = ipairs
 local math_floor = math.floor
+local math_max = math.max
 local math_abs = math.abs
+local table_insert = table.insert
+local string_gsub = string.gsub
 
 -- Cache for spell icons to avoid redundant C-API lookups
 local IconCache = {}
@@ -513,7 +517,7 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
                 pf.text:SetText(colorCode .. player.name .. "|r\n|cFF999999" .. displaySpec .. " " .. player.class .. "|r")
                 pf:SetAlpha(1)
                 
-                local pBuffs = Addon.Optimiser:GetPlayerBuffs(player, group.label)
+                local pBuffs = player.activeBuffs or {}
                 
                 for i, buffName in ipairs(pBuffs) do
                         local iconFrame = gf.playerIcons[pIndex][i]

@@ -5,6 +5,7 @@ Addon.Optimiser = {}
 local table_insert = table.insert
 local table_remove = table.remove
 local ipairs = ipairs
+local wipe = wipe or function(t) for k in pairs(t) do t[k] = nil end end
 
 local SPECS = {
     -- Warriors
@@ -485,7 +486,11 @@ function Addon.Optimiser:RefreshGroupBuffs(groups)
         end
         groups[g].label = groupRole
         
-        groups[g].buffs = {}
+        if not groups[g].buffs then
+            groups[g].buffs = {}
+        else
+            wipe(groups[g].buffs)
+        end
         local seenBuffs = {}
         
         local isCasterOrHealer = (groupRole == "Casters" or groupRole == "Healers")
@@ -493,6 +498,8 @@ function Addon.Optimiser:RefreshGroupBuffs(groups)
         
         for _, p in ipairs(groups[g]) do
             local pBuffs = self:GetPlayerBuffs(p, groupRole)
+            p.activeBuffs = pBuffs -- Cache buffs directly onto the player object for O(1) retrieval downstream
+            
             for _, buffName in ipairs(pBuffs) do
                 local skip = false
                 if Addon.IGNORED_UI_BUFFS and Addon.IGNORED_UI_BUFFS[buffName] then
@@ -527,56 +534,43 @@ function Addon.Optimiser:AnalyzeBuffs(groups)
         end
     end
     
-    local function hasRaidBuff(buffName)
-        for g=1, 5 do
-            local gLabel = groups[g].label or "Mixed"
-            for _, p in ipairs(groups[g]) do
-                local pBuffs = Addon.Optimiser:GetPlayerBuffs(p, gLabel)
-                for _, b in ipairs(pBuffs) do
-                    if b == buffName then return true end
+    -- O(N) Cache pass over the entire raid roster
+    local RaidStats = {
+        classes = {},
+        roles = {},
+        raidBuffs = {},
+        groupBuffs = {{}, {}, {}, {}, {}}
+    }
+    
+    for g=1, 5 do
+        RaidStats.roles[g] = { Tank = 0, Healer = 0, Melee = 0, Ranged = 0 }
+        
+        for _, p in ipairs(groups[g]) do
+            -- Class count
+            RaidStats.classes[p.class] = (RaidStats.classes[p.class] or 0) + 1
+            
+            -- Role count
+            local role = self:GetPlayerRole(p.spec)
+            if role then
+                RaidStats.roles[g][role] = (RaidStats.roles[g][role] or 0) + 1
+            end
+            
+            -- Buff tracking (using the cached activeBuffs computed during RefreshGroupBuffs)
+            if p.activeBuffs then
+                for _, buff in ipairs(p.activeBuffs) do
+                    RaidStats.raidBuffs[buff] = true
+                    RaidStats.groupBuffs[g][buff] = true
                 end
             end
         end
-        return false
     end
     
-    local function hasClass(className)
-        for g=1, 5 do
-            for _, p in ipairs(groups[g]) do
-                if p.class == className then return true end
-            end
-        end
-        return false
-    end
-
-    local function countClass(className)
-        local count = 0
-        for g=1, 5 do
-            for _, p in ipairs(groups[g]) do
-                if p.class == className then count = count + 1 end
-            end
-        end
-        return count
-    end
-
-    local function checkGroupBuff(gIndex, buffName)
-        local gLabel = groups[gIndex].label or "Mixed"
-        for _, p in ipairs(groups[gIndex]) do
-            local pBuffs = Addon.Optimiser:GetPlayerBuffs(p, gLabel)
-            for _, b in ipairs(pBuffs) do
-                if b == buffName then return true end
-            end
-        end
-        return false
-    end
-    
-    local function countRole(gIndex, role)
-        local c = 0
-        for _, p in ipairs(groups[gIndex]) do
-            if Addon.Optimiser:GetPlayerRole(p.spec) == role then c = c + 1 end
-        end
-        return c
-    end
+    -- Fast O(1) query helpers
+    local function hasClass(className) return (RaidStats.classes[className] or 0) > 0 end
+    local function countClass(className) return RaidStats.classes[className] or 0 end
+    local function hasRaidBuff(buffName) return RaidStats.raidBuffs[buffName] == true end
+    local function countRole(gIndex, role) return RaidStats.roles[gIndex][role] or 0 end
+    local function checkGroupBuff(gIndex, buffName) return RaidStats.groupBuffs[gIndex][buffName] == true end
 
     addCategory("Raid Buffs")
     local blName = (Addon.Faction == "Alliance") and "Heroism" or "Bloodlust"
