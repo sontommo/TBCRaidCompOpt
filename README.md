@@ -11,7 +11,8 @@ To import your raid roster from Raid-Helper:
 1. Click the **'comp'** link on your Raid-Helper sign-up list on Discord.
 2. Click the **'GO TO EVENT'** icon on the webpage.
 3. Click **JSON** in the top right corner of the page.
-4. Copy and paste the full JSON string directly into the addon in-game.
+4. Type `/raidcomp` in game.
+5. Copy and paste the full JSON string directly into the addon in-game.
 
 ## The Shaman Rule
 
