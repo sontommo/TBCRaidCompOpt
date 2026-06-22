@@ -53,7 +53,7 @@ local SPECS = {
     ["Destruction"] = { class="Warlock", role="Ranged", buffs={"Blood Pact", "Curse of the Elements", "Curse of Recklessness", "Improved Healthstone", "Improved Shadow Bolt"} },
     
     -- Druids
-    ["Balance"] = { class="Druid", role="Ranged", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Moonkin Form", "Improved Faerie Fire", "Insect Swarm", "Innervate"} },
+    ["Balance"] = { class="Druid", role="Ranged", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Moonkin Aura", "Improved Faerie Fire", "Insect Swarm", "Innervate"} },
     ["Dreamstate"] = { class="Druid", role="Ranged", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Improved Faerie Fire", "Innervate"} },
     ["Feral"] = { class="Druid", role="Melee", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Leader of the Pack", "Mangle", "Faerie Fire", "Innervate"} },
     ["Guardian"] = { class="Druid", role="Tank", buffs={"Mark of the Wild", "Improved Mark of the Wild", "Leader of the Pack", "Mangle", "Faerie Fire", "Innervate"} },
@@ -116,7 +116,7 @@ Addon.BUFF_SPELL_IDS = {
     ["Improved Shadow Bolt"] = 17803,
     ["Mark of the Wild"] = 26990,
     ["Improved Mark of the Wild"] = 16998,
-    ["Moonkin Form"] = 24907,
+    ["Moonkin Aura"] = 24907,
     ["Improved Faerie Fire"] = 33602,
     ["Insect Swarm"] = 27013,
     ["Leader of the Pack"] = 24932,
@@ -159,7 +159,7 @@ Addon.SPELL_BUFFS = {
     ["Mana Spring Totem"] = true,
     ["Mana Tide Totem"] = true,
     ["Vampiric Touch"] = true,
-    ["Moonkin Form"] = true,
+    ["Moonkin Aura"] = true,
     ["Totem of Wrath"] = true,
     ["Wrath of Air Totem"] = true,
     ["Arcane Intellect"] = true,
