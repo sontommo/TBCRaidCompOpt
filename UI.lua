@@ -126,7 +126,7 @@ function Addon.UI:CreateMainFrame()
     f.groupFrames = {}
     for i=1, 5 do
         local gf = CreateSleekFrame(groupsContainer)
-        gf:SetSize(180, 290)
+        gf:SetSize(180, 310)
         gf:SetBackdropColor(0.15, 0.15, 0.15, 1)
         
         local labelBg = CreateFrame("Frame", nil, gf, "BackdropTemplate")
@@ -176,9 +176,17 @@ function Addon.UI:CreateMainFrame()
         gf.players = {}
         gf.playerIcons = {}
         for p=1, 5 do
-            local pf = CreateFrame("Button", nil, gf)
+            local pf = CreateFrame("Button", nil, gf, "BackdropTemplate")
             pf:SetSize(164, 28)
             pf:SetPoint("TOPLEFT", 8, -10 - (p-1)*48 - 45)
+            pf:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8" })
+            pf:SetBackdropColor(0.25, 0.25, 0.25, 0.5)
+            
+            local highlight = pf:CreateTexture(nil, "HIGHLIGHT")
+            highlight:SetAllPoints()
+            highlight:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+            highlight:SetBlendMode("ADD")
+            highlight:SetAlpha(0.4)
             
             local pfText = pf:CreateFontString(nil, "OVERLAY")
             pfText:SetFontObject("GameFontHighlightSmall")
