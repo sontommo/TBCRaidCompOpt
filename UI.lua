@@ -140,13 +140,13 @@ function Addon.UI:CreateMainFrame()
     f.groupFrames = {}
     for i=1, 5 do
         local gf = CreateSleekFrame(groupsContainer)
-        gf:SetSize(180, 310)
+        gf:SetSize(180, 330)
         gf:SetBackdropColor(0.15, 0.15, 0.15, 1)
         
         local labelBg = CreateFrame("Frame", nil, gf, "BackdropTemplate")
         labelBg:SetPoint("TOPLEFT", 1, -1)
         labelBg:SetPoint("TOPRIGHT", -1, -1)
-        labelBg:SetHeight(45)
+        labelBg:SetHeight(70)
         labelBg:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8" })
         labelBg:SetBackdropColor(0.1, 0.1, 0.1, 1)
         
@@ -157,14 +157,16 @@ function Addon.UI:CreateMainFrame()
         gf.label = label
         
         local groupIconContainer = CreateFrame("Frame", nil, labelBg)
-        groupIconContainer:SetSize(160, 16)
-        groupIconContainer:SetPoint("BOTTOM", 0, 4)
+        groupIconContainer:SetSize(160, 48)
+        groupIconContainer:SetPoint("TOP", 0, -20)
         gf.groupIconContainer = groupIconContainer
         gf.groupIcons = {}
-        for k=1, 8 do
+        for k=1, 24 do
             local iconF = CreateFrame("Frame", nil, groupIconContainer)
             iconF:SetSize(14, 14)
-            iconF:SetPoint("LEFT", (k-1)*16, 0)
+            local row = math_floor((k-1) / 10)
+            local col = (k-1) % 10
+            iconF:SetPoint("TOPLEFT", col*16, -row*16)
             iconF:EnableMouse(true)
             local tex = iconF:CreateTexture(nil, "ARTWORK")
             tex:SetAllPoints()
@@ -192,7 +194,7 @@ function Addon.UI:CreateMainFrame()
         for p=1, 5 do
             local pf = CreateFrame("Button", nil, gf, "BackdropTemplate")
             pf:SetSize(164, 28)
-            pf:SetPoint("TOPLEFT", 8, -10 - (p-1)*48 - 45)
+            pf:SetPoint("TOPLEFT", 8, -10 - (p-1)*48 - 75)
             pf:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8" })
             pf:SetBackdropColor(0.25, 0.25, 0.25, 0.5)
             
@@ -405,10 +407,10 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
         gf.label:SetText("Group " .. gIndex .. " - " .. (group.label or "Mixed"))
         
         if group.buffs then
-            local numIcons = math.min(#group.buffs, 8)
-            local totalWidth = numIcons * 16
+            local numIcons = math.min(#group.buffs, 24)
+            local totalWidth = math.min(numIcons, 10) * 16
             gf.groupIconContainer:SetWidth(totalWidth)
-            for i=1, 8 do
+            for i=1, 24 do
                 local iconF = gf.groupIcons[i]
                 if i <= numIcons then
                     local buffName = group.buffs[i]
@@ -427,7 +429,7 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
                 end
             end
         else
-            for i=1, 8 do gf.groupIcons[i]:Hide() end
+            for i=1, 24 do gf.groupIcons[i]:Hide() end
         end
         for pIndex=1, 5 do
             local pf = gf.players[pIndex]
@@ -631,7 +633,7 @@ function Addon.UI:Reflow()
         
         local gf = f.groupFrames[i]
         gf:ClearAllPoints()
-        gf:SetPoint("TOPLEFT", f.groupsContainer, "TOPLEFT", startX + col * (groupWidth + padding), -row * (275 + padding))
+        gf:SetPoint("TOPLEFT", f.groupsContainer, "TOPLEFT", startX + col * (groupWidth + padding), -row * (330 + padding))
         
         col = col + 1
         if col >= maxCols then
@@ -641,7 +643,7 @@ function Addon.UI:Reflow()
     end
     
     local rowsNeeded = row + (col > 0 and 1 or 0)
-    local groupsHeight = rowsNeeded * (275 + padding)
+    local groupsHeight = rowsNeeded * (330 + padding)
     f.groupsContainer:SetHeight(groupsHeight)
     
     f.buffsBg:SetPoint("TOPLEFT", f.groupsContainer, "TOPLEFT", 0, -groupsHeight - 10)

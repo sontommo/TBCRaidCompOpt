@@ -415,6 +415,7 @@ function Addon.Optimiser:RefreshGroupBuffs(groups)
         end
         if counts.Tank >= 2 then groupRole = "Tanks"
         elseif counts.Healer >= 3 then groupRole = "Healers"
+        elseif counts.Melee > 0 and counts.Ranged > 0 then groupRole = "DPS"
         elseif counts.Melee >= 3 then groupRole = "Melee"
         elseif counts.Ranged >= 3 then groupRole = "Casters"
         end
