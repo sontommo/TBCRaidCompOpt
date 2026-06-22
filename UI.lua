@@ -136,7 +136,8 @@ function Addon.UI:CreateMainFrame()
     -- Faction Toggle
     local factionFrame = CreateFrame("Frame", nil, f)
     factionFrame:SetSize(120, 30)
-    factionFrame:SetPoint("TOPRIGHT", -20, -45)
+    factionFrame:SetPoint("LEFT", importBtn, "RIGHT", 40, 0)
+    factionFrame:SetScale(1.5)
     
     local allianceBtn = CreateFrame("CheckButton", nil, factionFrame, "UIRadioButtonTemplate")
     allianceBtn:SetPoint("LEFT", 0, 0)
