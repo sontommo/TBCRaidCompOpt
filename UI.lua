@@ -150,7 +150,7 @@ function Addon.UI:CreateMainFrame()
     allianceBtn:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1 })
     
     local allianceTex = allianceBtn:CreateTexture(nil, "ARTWORK")
-    allianceTex:SetSize(22, 22)
+    allianceTex:SetSize(38, 38)
     allianceTex:SetPoint("CENTER", 0, 0)
     allianceTex:SetTexture("Interface\\TargetingFrame\\UI-PVP-Alliance")
     
@@ -160,7 +160,7 @@ function Addon.UI:CreateMainFrame()
     hordeBtn:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8", edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1 })
     
     local hordeTex = hordeBtn:CreateTexture(nil, "ARTWORK")
-    hordeTex:SetSize(22, 22)
+    hordeTex:SetSize(38, 38)
     hordeTex:SetPoint("CENTER", 0, 0)
     hordeTex:SetTexture("Interface\\TargetingFrame\\UI-PVP-Horde")
     
@@ -513,12 +513,9 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
                 pf.text:SetText(colorCode .. player.name .. "|r\n|cFF999999" .. displaySpec .. " " .. player.class .. "|r")
                 pf:SetAlpha(1)
                 
-                -- Render Icons
-                local p = group[pIndex]
-                if p then
-                    local pBuffs = Addon.Optimiser:GetPlayerBuffs(p, group.label)
-                    
-                    for i, buffName in ipairs(pBuffs) do
+                local pBuffs = Addon.Optimiser:GetPlayerBuffs(player, group.label)
+                
+                for i, buffName in ipairs(pBuffs) do
                         local iconFrame = gf.playerIcons[pIndex][i]
                         if iconFrame then
                             local resolvedBuffName = buffName
@@ -538,13 +535,11 @@ function Addon.UI:RenderGroups(groups, activeBuffsList)
                             iconFrame.spellName = resolvedBuffName
                             iconFrame:Show()
                         end
-                    end
-                    -- Hide unused
-                    for i = #specInfo.buffs + 1, 8 do
-                        if gf.playerIcons[pIndex][i] then gf.playerIcons[pIndex][i]:Hide() end
-                    end
-                else
-                    for i=1, 8 do gf.playerIcons[pIndex][i]:Hide() end
+                end
+                
+                -- Hide unused
+                for i = #pBuffs + 1, 8 do
+                    if gf.playerIcons[pIndex][i] then gf.playerIcons[pIndex][i]:Hide() end
                 end
             else
                 pf.text:SetText("")
